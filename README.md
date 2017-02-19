@@ -2,7 +2,7 @@
 
 A view that acts like a `UISlider` but has no visible interface. Pan to change its value.
 
-###Properties: 
+####Properties: 
 
 Just like `UISlider`: **value**, **maxValue**, **minValue**.
     
@@ -20,9 +20,9 @@ Or you can observe events using this delegate method:
 
 #SliderIndicator
 
-A minimalistic view that can be set as **indicator* of SliderView.
+A minimalistic view that can be set as **indicator** of SliderView.
 
-###Properties:
+####Properties:
 
 Just like `SliderView`: **value**, **maxValue**, **minValue**.
 
@@ -30,5 +30,5 @@ Relative padding of the indicator: **relativePadding**
 
 Defines the behaviour of the indicator: **anchor**. Can be `.left`, `.right` or `.center`.
 
-Color of the indicator: **foregroundColour**.
+Colour of the indicator: **foregroundColour**.
 
