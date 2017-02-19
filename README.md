@@ -32,3 +32,5 @@ Defines the behaviour of the indicator: **anchor**. Can be `.left`, `.right` or 
 
 Colour of the indicator: **foregroundColour**.
 
+
+![result](https://github.com/ysoftware/SliderView/blob/master/1.png)
