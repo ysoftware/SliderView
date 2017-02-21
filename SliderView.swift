@@ -105,8 +105,6 @@ class SliderView:UIView {
     }
 
     private func setup() {
-        backgroundColor = .clear
-
         let recognizer = UIPanGestureRecognizer(target: self, action: #selector(viewPanned))
         recognizer.maximumNumberOfTouches = 1
         addGestureRecognizer(recognizer)

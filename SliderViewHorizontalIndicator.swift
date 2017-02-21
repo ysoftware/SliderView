@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-class SliderIndicator: UIView, SliderViewIndicator {
+class SliderViewHorizontalIndicator: UIView, SliderViewIndicator {
 
     // MARK: - Properties
 
@@ -68,6 +68,11 @@ class SliderIndicator: UIView, SliderViewIndicator {
         case center
     }
 
+    /** Middle point between `minValue` and `maxValue`. */
+    var middleValue:Float {
+        return (minValue + maxValue) / 2
+    }
+
     // MARK: - Private
 
     private let foregroundView = UIView()
@@ -98,21 +103,24 @@ class SliderIndicator: UIView, SliderViewIndicator {
                         self.foregroundView.backgroundColor = self.foregroundColour
 
                         let dif = self.maxValue - self.minValue
-                        let absoluteValue = abs(self.value)
                         let width = Float(self.frame.size.width)
 
                         switch self.anchor {
                         case .center:
+                            let isPositive = self.middleValue - self.value < 0
+                            let relativeValue = self.middleValue - self.value
                             let center = width / 2
                             let indicatorWidth = center - (center * self.relativePadding)
-                            let position = indicatorWidth / dif * 2 * absoluteValue
+                            let position = abs(indicatorWidth / dif * 2 * relativeValue)
 
-                            self.foregroundView.frame = CGRect(x: CGFloat(self.value >= 0 ? center : center - position), y: 0, width: CGFloat(position), height: self.frame.size.height)
+                            self.foregroundView.frame = CGRect(x: CGFloat(isPositive ? center : center - position),
+                                                               y: 0, width: CGFloat(position), height: self.frame.size.height)
                         case .left, .right:
                             let indicatorWidth = width - (width * self.relativePadding)
                             let position = indicatorWidth / dif * (self.maxValue + self.value)
 
-                            self.foregroundView.frame = CGRect(x: self.anchor == .left ? 0 : CGFloat(width - position), y: 0, width: CGFloat(position), height: self.frame.size.height)
+                            self.foregroundView.frame = CGRect(x: self.anchor == .left ? 0 : CGFloat(width - position),
+                                                               y: 0, width: CGFloat(position), height: self.frame.size.height)
                         }
         }, completion: nil)
     }
