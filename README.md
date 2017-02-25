@@ -18,7 +18,7 @@ Or you can observe events using this delegate method:
 
 
 
-#SliderIndicator
+#SliderViewHorizontalIndicator
 
 A minimalistic view that can be set as **indicator** of SliderView.
 
