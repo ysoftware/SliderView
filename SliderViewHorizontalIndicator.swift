@@ -117,7 +117,7 @@ class SliderViewHorizontalIndicator: UIView, SliderViewIndicator {
                                                                y: 0, width: CGFloat(position), height: self.frame.size.height)
                         case .left, .right:
                             let indicatorWidth = width - (width * self.relativePadding)
-                            let position = indicatorWidth / dif * (self.maxValue + self.value)
+                            let position = indicatorWidth * (1.0 / (self.maxValue - self.minValue) * (self.value - self.minValue))
 
                             self.foregroundView.frame = CGRect(x: self.anchor == .left ? 0 : CGFloat(width - position),
                                                                y: 0, width: CGFloat(position), height: self.frame.size.height)
