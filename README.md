@@ -1,6 +1,6 @@
 # SliderView
 
-A view that acts like a `UISlider` but has no visible interface. Pan to change its value.
+A view that acts like a `UISlider` but has no visible interface. Pan up or down to change its value.
 
 #### Properties: 
 
