@@ -15,7 +15,7 @@ class SliderViewHorizontalIndicator: UIView, SliderViewIndicator {
     /** Lowest value of the indicator. Cannot be higher than `maxValue`. Default value is 0.0. */
     @IBInspectable var minValue:Float = 0.0 {
         didSet {
-            if minValue >= maxValue { minValue += 0.1 }
+            if minValue >= maxValue { minValue = maxValue - 0.1 }
             reloadViews()
         }
     }
@@ -23,7 +23,7 @@ class SliderViewHorizontalIndicator: UIView, SliderViewIndicator {
     /** Highest value of the indicator. Cannot be lower than `minValue`. Default value is 1.0. */
     @IBInspectable var maxValue:Float = 1.0 {
         didSet {
-            if minValue >= maxValue { maxValue -= 0.1 }
+            if minValue >= maxValue { maxValue = minValue + 0.1 }
             reloadViews()
         }
     }
@@ -93,7 +93,7 @@ class SliderViewHorizontalIndicator: UIView, SliderViewIndicator {
         reloadViews()
     }
 
-    func reloadViews() {
+    private func reloadViews() {
         UIView.animate(withDuration: 0.1,
                        delay: 0,
                        usingSpringWithDamping: 0.8,
@@ -113,16 +113,23 @@ class SliderViewHorizontalIndicator: UIView, SliderViewIndicator {
                             let indicatorWidth = center - (center * self.relativePadding)
                             let position = abs(indicatorWidth / dif * 2 * relativeValue)
 
-                            self.foregroundView.frame = CGRect(x: CGFloat(isPositive ? center : center - position),
-                                                               y: 0, width: CGFloat(position), height: self.frame.size.height)
+                            self.foregroundView.frame = CGRect(
+                                x: CGFloat(isPositive ? center : center - position),
+                                y: 0,
+                                width: CGFloat(position),
+                                height: self.frame.size.height)
                         case .left, .right:
                             let indicatorWidth = width - (width * self.relativePadding)
-                            let position = indicatorWidth * (1.0 / (self.maxValue - self.minValue) * (self.value - self.minValue))
+                            let position = indicatorWidth * (self.value - self.minValue)
+                                / (self.maxValue - self.minValue)
 
-                            self.foregroundView.frame = CGRect(x: self.anchor == .left ? 0 : CGFloat(width - position),
-                                                               y: 0, width: CGFloat(position), height: self.frame.size.height)
+                            self.foregroundView.frame = CGRect(
+                                x: self.anchor == .left ? 0 : CGFloat(width - position),
+                                y: 0,
+                                width: CGFloat(position),
+                                height: self.frame.size.height)
                         }
         }, completion: nil)
     }
-
+    
 }

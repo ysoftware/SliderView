@@ -8,7 +8,18 @@
 import UIKit
 
 protocol SliderViewDelegate: class {
-    func sliderView(_ sliderView: SliderView, valueChanged value: Float)
+    /** Constant callback for value change. */
+    func sliderView(_ sliderView: SliderView, newValue value: Float)
+
+    /** These get called once every time user starts or ends interaction. */
+    func sliderViewWillChangeValue(_ sliderView: SliderView, oldValue:Float)
+    func sliderViewDidChangeValue(_ sliderView: SliderView, newValue:Float)
+}
+
+extension SliderViewDelegate { /** Making delegate calls optional. */
+    func sliderView(_ sliderView: SliderView, newValue value: Float) { }
+    func sliderViewWillChangeValue(_ sliderView: SliderView, oldValue:Float) { }
+    func sliderViewDidChangeValue(_ sliderView: SliderView, newValue:Float) { }
 }
 
 /**
@@ -35,7 +46,9 @@ class SliderView:UIView {
 
     /**
     Controls whether slider should react to user's interactions. Default value is `true`. */
-    var isEnabled:Bool = true
+    var isEnabled:Bool = true {
+        didSet { isUserInteractionEnabled = isEnabled }
+    }
 
     /**
     Controls how far should user swipe before slider starts to change value.
@@ -44,7 +57,7 @@ class SliderView:UIView {
     Measured in points. Default value is 0.
     */
     var resolution:Float = 0 {
-        didSet { if resolution > 0 { resolution = 0 }}
+        didSet { if resolution < 0 { resolution = 0 }} // it's '<' right????? check pls
     }
 
     /**
@@ -60,7 +73,7 @@ class SliderView:UIView {
     /** Lowest value of the slider. Cannot be higher than `maxValue`. Default value is 0.0. */
     var minValue:Float = 0.0 {
         didSet {
-            if minValue >= maxValue { minValue += 0.1 }
+            if minValue >= maxValue { minValue = maxValue - 0.1 }
             indicator?.minValue = minValue
         }
     }
@@ -68,7 +81,7 @@ class SliderView:UIView {
     /** Highest value of the slider. Cannot be lower than `minValue`. Default value is 1.0. */
     var maxValue:Float = 1.0 {
         didSet {
-            if minValue >= maxValue { maxValue -= 0.1 }
+            if minValue >= maxValue { maxValue = minValue + 0.1 }
             indicator?.maxValue = maxValue
         }
     }
@@ -94,6 +107,8 @@ class SliderView:UIView {
 
     // MARK: - Private
 
+    private var isChangingValue:Bool = false
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
@@ -110,20 +125,36 @@ class SliderView:UIView {
         addGestureRecognizer(recognizer)
     }
 
+    // MARK: - Touches
+
     func viewPanned(_ sender: UIPanGestureRecognizer) {
-        guard isEnabled, sender.state == .changed else { return }
+        guard isEnabled else { return }
 
-        let translation = Float(sender.translation(in: self).x - sender.translation(in: self).y)
-        if abs(translation) >= resolution {
-            let dif = maxValue - minValue
-            let size = Float(min(frame.size.width, frame.size.height))
-            let panSize = size / sensitivity
-            let adaptation = panSize / dif
+        switch sender.state {
+        case .began:
+            if !isChangingValue {
+                delegate?.sliderViewWillChangeValue(self, oldValue: value)
+                isChangingValue = true
+            }
+        case .ended, .cancelled, .failed:
+            if isChangingValue {
+                isChangingValue = false
+                delegate?.sliderViewDidChangeValue(self, newValue: value)
+            }
+        case .changed:
+            let translation = Float(sender.translation(in: self).x - sender.translation(in: self).y)
+            if abs(translation) >= resolution {
+                let dif = maxValue - minValue
+                let size = Float(min(frame.size.width, frame.size.height))
+                let panSize = size / sensitivity
+                let adaptation = panSize / dif
 
-            value += Float(translation / adaptation)
-            sender.setTranslation(.zero, in: sender.view)
+                value += Float(translation / adaptation)
+                delegate?.sliderView(self, newValue: value)
+                sender.setTranslation(.zero, in: sender.view)
+            }
+
+        default: break
         }
-        delegate?.sliderView(self, valueChanged: value)
     }
-
 }
