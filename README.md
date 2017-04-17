@@ -18,7 +18,7 @@ Or you can observe events using this delegate method:
 
 
 
-#SliderViewHorizontalIndicator
+# SliderViewHorizontalIndicator
 
 A minimalistic view that can be set as **indicator** of SliderView.
 
@@ -33,10 +33,7 @@ Defines the behaviour of the indicator: **anchor**. Can be `.left`, `.right` or 
 Colour of the indicator: **foregroundColour**.
 
 
-![result](https://github.com/ysoftware/SliderView/blob/master/1.png)
-
-![result](https://github.com/ysoftware/SliderView/blob/master/2.png)
-
-![result](https://github.com/ysoftware/SliderView/blob/master/3.png)
-
-![result](https://github.com/ysoftware/SliderView/blob/master/4.png)
+<img src="https://github.com/ysoftware/SliderView/blob/master/1.png" alt="alt text" width="400">
+<img src="https://github.com/ysoftware/SliderView/blob/master/2.png" alt="alt text" width="400">
+<img src="https://github.com/ysoftware/SliderView/blob/master/3.png" alt="alt text" width="400">
+<img src="https://github.com/ysoftware/SliderView/blob/master/4.png" alt="alt text" width="400">
