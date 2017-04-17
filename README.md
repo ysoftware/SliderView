@@ -2,7 +2,7 @@
 
 A view that acts like a `UISlider` but has no visible interface. Pan to change its value.
 
-####Properties: 
+#### Properties: 
 
 Just like `UISlider`: **value**, **maxValue**, **minValue**.
     
@@ -22,7 +22,7 @@ Or you can observe events using this delegate method:
 
 A minimalistic view that can be set as **indicator** of SliderView.
 
-####Properties:
+#### Properties:
 
 Just like `SliderView`: **value**, **maxValue**, **minValue**.
 
