@@ -23,8 +23,8 @@ extension SliderViewDelegate { /** Making delegate calls optional. */
 }
 
 /**
-Conform an object to this protocol and set SliderView's indicator property to receive slider value updates.
-*/
+ Conform an object to this protocol and set SliderView's indicator property to receive slider value updates.
+ */
 protocol SliderViewIndicator {
     var minValue:Float { get set }
     var maxValue:Float { get set }
@@ -45,27 +45,27 @@ class SliderView:UIView {
     }
 
     /**
-    Controls whether slider should react to user's interactions. Default value is `true`. */
+     Controls whether slider should react to user's interactions. Default value is `true`. */
     var isEnabled:Bool = true {
         didSet { isUserInteractionEnabled = isEnabled }
     }
 
     /**
-    Controls how far should user swipe before slider starts to change value.
-    On lower values, this can be used to set precision of the slider updates.
-        
-    Measured in points. Default value is 0.
-    */
+     Controls how far should user swipe before slider starts to change value.
+     On lower values, this can be used to set precision of the slider updates.
+
+     Measured in points. Default value is 0.
+     */
     var resolution:Float = 0 {
-        didSet { if resolution < 0 { resolution = 0 }} // it's '<' right????? check pls
+        didSet { if resolution > 0 { resolution = 0 }} // this is correct.
     }
 
     /**
-    Controls sensitivity to user's gestures.
-     
-    `1.0` means user has to swipe right through `100%` of view's size to reach maxValue from minValue.
-    Default value is 1.2.
-    */
+     Controls sensitivity to user's gestures.
+
+     `1.0` means user has to swipe right through `100%` of view's size to reach maxValue from minValue.
+     Default value is 1.2.
+     */
     var sensitivity:Float = 1.2 {
         didSet { if sensitivity <= 0 { sensitivity = 0.01 }}
     }
@@ -153,7 +153,7 @@ class SliderView:UIView {
                 delegate?.sliderView(self, newValue: value)
                 sender.setTranslation(.zero, in: sender.view)
             }
-
+            
         default: break
         }
     }
